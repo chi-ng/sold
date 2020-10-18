@@ -1,0 +1,26 @@
+{% extends 'welcome/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Post Auction {% endblock title %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Post Auction</li>
+  </ol>
+</nav>
+
+
+
+<legend class='border-bottom mb-4'><h3> Post A Auction Here</h3></legend>
+<form method='POST' enctype="multipart/form-data" id='post_auction' >
+<div>
+<img id='uploadImageDisplay' style='display:none' src="" alt="" class="img-thumbnail">
+</div>
+  {% csrf_token %}
+  {{form|crispy}}
+
+</form>
+
+<button type="submit" form='post_auction' class="btn btn-primary">Save</button>
+{% endblock content %}

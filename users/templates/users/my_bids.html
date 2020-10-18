@@ -1,0 +1,25 @@
+{% extends "welcome/base.html"%}
+{% block title %} My Bids {% endblock title %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">My Bids</li>
+  </ol>
+</nav>
+<h3> My Bidding History </h3> <hr>
+
+<ul class="list-group">
+{% if myBids.count > 0 %}
+    {% for bid in myBids %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <a href = "{% url 'welcome:itemDetail' bid.item.id%}">Item: {{bid.item.title}} By: {{bid.user.username}}</a>
+    <span class="badge badge-primary badge-pill">£: {{bid.price}}</span>
+    <small class="text-muted">{{bid.date_and_time|date:"F d, Y"}} {{bid.date_and_time|time}}</small>
+  </li>
+
+
+    {% endfor %}
+{% endif %}
+</ul>
+{% endblock content %}

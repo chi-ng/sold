@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+}
+
+*:focus {
+	outline: none;
+}
+
+body {
+    font-family: Arial;
+    /* the background image used */
+    background-image: url("image/background.png");
+    /* center and scale the image */
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 30px;
+}
+
+/* set the size of the login container */
+.login {
+    margin: 20px auto;
+    width: 100%;
+}
+
+/* logo image size and border */
+.logo img {
+    width: 40%;
+    height: auto;
+    border-radius: 200px;
+}
+
+.login-screen {
+    background-color: #FFF;
+    padding: 30px;
+    /* border to be slightly round */
+    border-radius: 5px
+}
+
+/* center and color the text */
+.txtcontainer {
+    text-align: center;
+    color: #777;
+}
+
+/* center the form */
+.login-form {
+    text-align: center;
+}
+
+/* margin size between div */
+.control-group {
+    margin-bottom: 10px;
+}
+
+
+/* set text size, position, colour of the input */
+input {
+    text-align: center;
+    background-color: #ECF0F1;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 200;
+    padding: 10px 0;
+    width: 100%;
+    transition: border .5s;
+}
+
+/* login button */
+.btn {
+    border: 2px solid transparent;
+    background: #4dc0d7;
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 25px;
+    padding: 10px 0;
+    text-decoration: none;
+    text-shadow: none;
+    border-radius: 3px;
+    box-shadow: none;
+    transition: 0.25s;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* hoover effect when move mouse on the button */
+.btn:hover {
+    background-color: #3aa3b8;
+  }
+
+/* link for forgot password and create an account */
+.login-link {
+    font-size: 14px;
+    color: #444;
+    display: block;
+    margin-top: 14px;
+}

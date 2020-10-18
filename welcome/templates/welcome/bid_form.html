@@ -1,0 +1,27 @@
+{% extends 'welcome/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Bidding {% endblock title %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="./">Item Detail</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Bidding</li>
+  </ol>
+</nav>
+
+
+
+
+<legend class='border-bottom mb-4'><h3> Post Your Bid Here</h3></legend>
+<form method='POST' enctype="multipart/form-data" id='post_auction' >
+  {% csrf_token %}
+  {{form|crispy}}
+
+</form>
+<div>
+<img id='uploadImageDisplay' style='display:none' src="" alt="" class="img-thumbnail">
+</div>
+<button type="submit" form='post_auction' class="btn btn-primary">Bid</button>
+{% endblock content %}

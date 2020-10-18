@@ -1,0 +1,18 @@
+{% extends "welcome/index.html"%}
+
+
+{% block content %}
+
+	<h2> You have been logged out </h2>
+
+	<div>
+	<a class='text-primary' href="{% url 'login' %}"> Log In <u></u></a>
+	</div>
+	<br>
+	<div>
+	<a class='text-secondary' href="{% url 'welcome:index' %}"> <u>back to home</u> </a>
+	</div>
+
+
+
+{% endblock %}

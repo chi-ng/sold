@@ -1,0 +1,52 @@
+{% extends 'welcome/base.html' %}
+{% load tz %}
+{% block title %} My Items {% endblock title %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">My Items</li>
+  </ol>
+</nav>
+<h3> My Items </h3> <hr>
+{% if items.count > 0 %}
+    {% for item in items %}
+        <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+            <img src="{{item.picture.url}}" class="card-img" alt="...">
+            </div>
+            <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title"><a href='{% url 'welcome:itemDetail' item.id %}'> {{item.title}}</a></h5>
+                <h5 class="card-title text-danger">£: {{item.price}}</h5>
+                <p class="card-text">{{item.description}}</p>
+                {% if item.date_end|utc > currentTime|utc %}
+                  <p class="card-text"><small class="text-muted">Ends by: {{item.date_end|date:"F d, Y"}} {{item.date_end|time}}</small></p>
+                  <div class ='row'>
+                  <div class ='col'>
+                    <a href="{% url 'users:editMyItem' item.id %}">
+                      <button class="btn btn-secondary">
+                        Edit
+                      </button>
+                    </a>
+                  </div>
+                  <div class ='col'>
+                    <a href="{% url 'users:deleteMyItem' item.id %}">
+                      <button class="btn btn-danger">
+                        Delete
+                      </button>
+                    </a>
+                  </div>
+                </div>
+                {% else %}
+                  <p class="card-text"><small class="text-muted">Ended at: {{item.date_end|date:"F d, Y"}} {{item.date_end|time}}</small></p>
+                {% endif %}
+
+            </div>
+            </div>
+        </div>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,147 @@
+{% load static %}
+{% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
+{% bootstrap_css %}         {# Embed Bootstrap CSS #}
+{% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+{{ form.media }}            {# Adds date-picker required JS and CSS #}
+
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{% block title %}Home {% endblock title %}</title>
+	</head>
+	<body>
+	<div class='container'>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!--<a class="navbar-brand" href="#">SOLD</a>-->
+        <div class="logo">
+            <a href="{% url 'welcome:index' %}">  <img class='rounded-circle mx-3' width ="200" src="{% static 'logo.png' %}"/> </a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            {% if user.is_authenticated %}
+            {% endif %}
+            <ul id ='a_button' class="navbar-nav mr-auto mt-2 mt-lg-0 ">
+                <li class="nav-item m-2">
+                    <form class="form-inline my-lg-0" id="form1" method='GET' action='{% url 'welcome:search'%}'>
+                        <input class="form-control mr-sm-2" placeholder="Search" id="search_text" name="search">
+                    <button class="btn btn-outline-success m-2 my-sm-0"id="search_btn">Search</button>
+                    </form>
+                </li>
+                <li class="nav-item m-2">
+                    <a class="btn btn-primary" href="{% url 'welcome:itemCreate' %}" role="button">Post Auction</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li id='my_account' class="nav-item m-2">
+                    <a href="{% url 'welcome:index' %}"> <button type="button" class="btn btn-secondary "> Home</button> </a>
+                    <!--<a class="nav-link" href="#">Home</a>-->
+                </li>
+                <li class="nav-item m-2">
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        My Account
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{% url 'users:profile' %}"> View Profile </a>
+                            <a class="dropdown-item" href="{% url 'users:myitems' %}">My Items</a>
+                            <a class="dropdown-item" href="{% url 'users:mybids' %}">My Bids</a>
+                            <a class="dropdown-item" href="{% url 'welcome:closedItem' %}">Closed Auctions</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item m-2">
+                    <a class="text-secondary" href="{% url 'logout' %}"><u>Logout</u></a>
+                </li>
+                <!--
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}"><u>Logout</u></a>
+                </li> -->
+                {% else %}
+                <li class="nav-item m-2">
+                    <a class="nav-link" href="{% url 'login' %}"><u>Login</u></a>
+                </li>
+                {% endif %}
+            </ul>
+      </div>
+      </nav>
+      <br>
+
+		{% block content %}
+    <div id='item-lists'>
+    <h3>Found {{items.count}} {% if items.count > 1 %} items  {% else %} item {% endif %}</h3> <hr>
+    {% if items.count > 0 %}
+        {% for item in items %}
+            <div class="card mb-3" style="width: 100%;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                <img src="{{item.picture.url}}" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'welcome:itemDetail' item.id %}">{{item.title}}</a></h5>
+                    {% for bid in bids %}
+                        {% if bid.item == item %}
+                            <div class="card-title text-danger">The current bidding <small class="text-primary">by {{bid.user.username}}</small>
+                            <h5>£: {{bid.price}} </h5>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <p class=" text-secondary">Seller price £: {{item.price}}</p>
+                    <p class="card-title">Posted by <span class='text-primary'>
+                    {{item.user}}</span></p>
+                    <p class="card-text">{{item.description}}</p>
+                    <p class="card-text"><small class="text-muted">End by: {{item.date_end|date:"F d, Y"}} {{item.date_end|time}}</small></p>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'welcome:bidCreate' item.id %}" ><button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Place Bid</button></a>
+
+                    {% endif %}
+                    <div class="card-text">
+                    </div>
+
+                </div>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+  	{% endblock content %}
+	</div>
+
+
+	<script>
+		$('input:file').change(function(){
+			readURL(this);
+			$('#uploadImageDisplay').show();
+		})
+		function readURL(input) {
+		  if (input.files && input.files[0]) {
+		    var reader = new FileReader();
+		    reader.onload = function(e) {
+		      $('#uploadImageDisplay').attr('src', e.target.result);
+		    }
+		    reader.readAsDataURL(input.files[0]);
+		  }
+		}
+		$('#search_btn').click(function(){
+    	$.ajax({
+				url: "{% url 'welcome:search'%}",
+				method: "GET",
+        dataType: 'json',
+				data: $('#form1').serializeArray(),
+				success: function (data){
+					console.log("successful")
+				},
+				error : function(xhr,errmsg,err) {
+      	}
+			})
+    })
+
+
+	</script>
+	</body>
+</html>
